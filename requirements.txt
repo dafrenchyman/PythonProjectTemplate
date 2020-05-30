@@ -4,4 +4,4 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
-numpy==1.18.2             # via -r requirements.in
+numpy==1.18.4             # via -r requirements.in

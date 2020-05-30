@@ -2,6 +2,7 @@ black
 detect-secrets
 flake8
 isort[requirements]
+jupyterlab
 pip-tools
 pre-commit
 nose
