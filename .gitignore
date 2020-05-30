@@ -150,4 +150,7 @@ cython_debug/
 media
 static
 
+# Visual Studio Project 
+.vscode/settings.json
+
 # Project related ignores (place project related ignores below here)
