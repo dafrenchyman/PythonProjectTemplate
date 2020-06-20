@@ -54,7 +54,7 @@ pickleshare==0.7.5        # via ipython
 pip-api==0.0.14           # via isort
 pip-tools==5.2.1          # via -r requirements.dev.in
 pipreqs==0.4.10           # via isort
-pre-commit==1.15.2        # via -r requirements.dev.in
+pre-commit==1.21.0         # via -r requirements.dev.in
 prometheus-client==0.8.0  # via notebook
 prompt-toolkit==3.0.5     # via ipython
 ptyprocess==0.6.0         # via pexpect, terminado
