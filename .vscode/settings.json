@@ -1,12 +1,7 @@
 {
     "python.pythonPath": ".venv/bin/python",
     "python.terminal.activateEnvironment": true,
-    "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
-        "**/.DS_Store": true,
+    "files.watcherExclude": {
         "**/.venv": true
     }
 }
