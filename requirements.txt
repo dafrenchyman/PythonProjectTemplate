@@ -4,4 +4,17 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
-numpy==1.18.4             # via -r requirements.in
+joblib==0.16.0            # via scikit-learn
+numpy==1.18.4             # via -r requirements.in, pandas, scikit-learn, scipy
+pandas==1.1.2             # via -r requirements.in
+plotly==4.10.0            # via -r requirements.in
+python-dateutil==2.8.1    # via pandas
+pytz==2020.1              # via pandas
+retrying==1.3.3           # via plotly
+scikit-learn==0.23.2      # via sklearn
+scipy==1.5.2              # via scikit-learn
+six==1.15.0               # via plotly, python-dateutil, retrying
+sklearn==0.0              # via -r requirements.in
+sql==0.4.0                # via -r requirements.in
+sqlalchemy==1.3.19        # via -r requirements.in
+threadpoolctl==2.1.0      # via scikit-learn

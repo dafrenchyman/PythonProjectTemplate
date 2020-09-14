@@ -15,7 +15,7 @@ cffi==1.14.2              # via argon2-cffi
 cfgv==3.2.0               # via pre-commit
 chardet==3.0.4            # via requests
 click==7.1.2              # via black, pip-tools
-dataclasses==0.7          # via black
+dataclasses==0.6          # via black
 decorator==4.4.2          # via ipython, traitlets
 defusedxml==0.6.0         # via nbconvert
 detect-secrets==0.14.3    # via -r requirements.dev.in
