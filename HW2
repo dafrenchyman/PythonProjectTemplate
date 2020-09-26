@@ -1,0 +1,66 @@
+--/*
+--Sergio F. Gonzalez - BDA 696
+
+--Calculate the batting average using SQL queries for every player
+---Annual, Historic
+---Rolling (over last 100 days) ?
+--Look at the last 100 days that player was in prior to this game
+--Store all these results in their own tables
+--*/
+
+-- Historical Batting Average
+create or replace table HistoricalBatAvg (batter int) Engine = myISAM
+select batter_counts.batter, sum(hit) / sum(atBat) as Hist_BattingAvg
+	from batter_counts
+	inner join game
+	 on batter_counts.game_id  = game.game_id
+	 inner join battersingame on batter_counts.batter = battersingame.batter
+	  	 and game.game_id  = battersingame.game_id
+	where game.game_id = batter_counts.game_id -- and batter_counts.batter = '407886'
+	group by batter_counts.batter
+	order by Hist_BattingAvg desc;
+
+select * from HistoricalBatAvg;
+
+
+-- This query pulls out the number of years that players played and gives me the batting average by year
+-- Annual metrics are on the first query/table.
+-- -- PLEASE NOTE: Zero's were not taken out because you can be at bat and still strike out,
+-- -- meaning a zero is possible for the time the player is at bat.
+
+create or replace table AnnBatAvg (batter int) Engine = myISAM
+select batter_counts.batter,
+	year(game.local_date) as ann_year
+	, sum(hit) / sum(atBat) as ann_battingAvg
+	from batter_counts
+	inner join game
+	 on batter_counts.game_id  = game.game_id
+	 inner join battersingame on batter_counts.batter = battersingame.batter
+	  	 and game.game_id  = battersingame.game_id
+	where game.game_id = batter_counts.game_id -- and batter_counts.batter = '407886'
+	group by batter_counts.batter, year(game.local_date);
+
+select * from AnnBatAvg
+
+
+-- Rolling Average
+-- -- PLEASE NOTE: Zero's were not taken out because you can be at bat and still strike out,
+-- -- meaning a zero is possible for the time the player is at bat.
+
+create or replace table batter as
+	 select batter,atbat,hit,bc.game_id,Date(local_date) as loc_dt
+	 from batter_counts bc
+	 join game g
+	 on g.game_id = bc.game_id
+	 ORDER BY game_id ,loc_dt;
+
+
+create or replace table rolling_avgerage  as
+	select bat1.game_id, bat1.batter, sum(ifnull(ba.Hit,0))/nullif(sum(ifnull(ba.atbat,0)),0) as Rolling_average, bat1.loc_dt, count(*) as cnt
+	from batter bat1 join batter ba on ba.batter = bat1.batter and ba.loc_dt > date_sub(bat1.loc_dt, interval 100 day)
+	and ba.loc_dt < bat1.loc_dt
+	where bat1.game_id = 12560 #(remove comment to limit values to a particular game or ADD comments in this line to calculate all players)
+	group by bat1.game_id ,bat1.batter, bat1.loc_dt;
+
+#View the results of my rolling average
+select * from rolling_avgerage;
