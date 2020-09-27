@@ -7,7 +7,7 @@
 --Look at the last 100 days that player was in prior to this game
 --Store all these results in their own tables
 --*/
-
+use baseball
 -- Historical Batting Average
 create or replace table HistoricalBatAvg (batter int) Engine = myISAM
 select batter_counts.batter, sum(hit) / sum(atBat) as Hist_BattingAvg
