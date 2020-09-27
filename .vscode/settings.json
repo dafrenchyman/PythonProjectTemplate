@@ -2,6 +2,6 @@
   "files.watcherExclude": {
     "**/.venv": true
   },
-  "python.pythonPath": ".venv/bin/python",
+  "python.pythonPath": "C:\\Users\\Trini\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
   "python.terminal.activateEnvironment": true
 }
