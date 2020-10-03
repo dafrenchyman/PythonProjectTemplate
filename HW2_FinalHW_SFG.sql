@@ -1,6 +1,6 @@
 
 /*
-Sergio F. Gonzalez - BDA
+Sergio F. Gonzalez - BDA.696
 
 Calculate the batting average using SQL queries for every player
 -Annual, Historic 
