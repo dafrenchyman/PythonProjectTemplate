@@ -6,8 +6,8 @@
   - You can run `./scripts/create-venv.sh` to generate one
 - `pip3 install --upgrade pip`
 - Install pip-tools `pip3 install pip-tools`
-- Update dev requirements: `pip-compile --output-file=requirements.dev.txt requirements.dev.in`
-- Update requirements: `pip-compile --output-file=requirements.txt requirements.in`
+- Update dev requirements: `pip-compile --output-file=requirements.dev.txt requirements.dev.in --upgrade`
+- Update requirements: `pip-compile --output-file=requirements.txt requirements.in --upgrade`
 - Install dev requirements `pip3 install -r requirements.dev.txt`
 - Install requirements `pip3 install -r requirements.txt`
 - `pre-commit install`
@@ -15,6 +15,7 @@
 ## Update versions
 
 `pip-compile --output-file=requirements.dev.txt requirements.dev.in --upgrade`
+`pip-compile --output-file=requirements.txt requirements.in --upgrade`
 
 # Run `pre-commit` locally.
 
