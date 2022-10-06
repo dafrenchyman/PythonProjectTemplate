@@ -21,6 +21,7 @@ def main():
     sql1 = "select * from baseball.batter_counts"
     database = "baseball"
     user = "bita"
+    password = "salam"
     server = "localhost"
     port = 3306
     jdbc_url = f"jdbc:mysql://{server}:{port}/{database}?permitMysqlScheme"
@@ -31,7 +32,7 @@ def main():
         .option("url", jdbc_url)
         .option("query", sql1)
         .option("user", user)
-        .option("password")
+        .option("password", password)
         .option("driver", jdbc_driver)
         .load()
     )
@@ -42,6 +43,7 @@ def main():
     sql2 = "select * from baseball.game"
     database = "baseball"
     user = "bita"
+    password = "salam"
     server = "localhost"
     port = 3306
     jdbc_url = f"jdbc:mysql://{server}:{port}/{database}?permitMysqlScheme"
@@ -52,12 +54,14 @@ def main():
         .option("url", jdbc_url)
         .option("query", sql2)
         .option("user", user)
-        .option("password")
+        .option("password", password)
         .option("driver", jdbc_driver)
         .load()
     )
 
     df2.show()
+    df2.printSchema()
+
 
     df1.createOrReplaceTempView("batter_counts")
     df2.createOrReplaceTempView("game")
@@ -93,8 +97,8 @@ def main():
         predictionCol="pred_survived",
     )
     random_forest_fitted = random_forest.fit(results)
-    titanic_df = random_forest_fitted.transform(results)
-    titanic_df.show()
+    results_df = random_forest_fitted.transform(results)
+    results_df.show()
 
     return
 
