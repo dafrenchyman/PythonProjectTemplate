@@ -12,7 +12,7 @@ build==0.8.0
     # via pip-tools
 cachetools==5.2.0
     # via google-auth
-certifi==2022.6.15
+certifi==2022.9.24
     # via requests
 cfgv==3.3.1
     # via pre-commit
@@ -23,11 +23,13 @@ click==8.1.3
     #   flask
     #   pip-tools
     #   uvicorn
+contourpy==1.0.5
+    # via matplotlib
 cycler==0.11.0
     # via matplotlib
 distlib==0.3.6
     # via virtualenv
-fastapi==0.82.0
+fastapi==0.85.0
     # via -r requirements.in
 filelock==3.8.0
     # via virtualenv
@@ -35,11 +37,11 @@ flake8==5.0.4
     # via -r requirements.in
 flask==2.2.2
     # via -r requirements.in
-fonttools==4.37.1
+fonttools==4.37.4
     # via matplotlib
 future==0.18.2
     # via pygam
-google-auth==2.11.0
+google-auth==2.12.0
     # via
     #   google-auth-oauthlib
     #   tensorboard
@@ -47,15 +49,15 @@ google-auth-oauthlib==0.4.6
     # via tensorboard
 graphviz==0.20.1
     # via -r requirements.in
-grpcio==1.48.1
+grpcio==1.49.1
     # via tensorboard
 gunicorn==20.1.0
     # via -r requirements.in
-h11==0.13.0
+h11==0.14.0
     # via uvicorn
-identify==2.5.5
+identify==2.5.6
     # via pre-commit
-idna==3.3
+idna==3.4
     # via
     #   anyio
     #   requests
@@ -65,17 +67,19 @@ itsdangerous==2.1.2
     # via flask
 jinja2==3.1.2
     # via flask
-joblib==1.1.0
+joblib==1.2.0
     # via scikit-learn
 kiwisolver==1.4.4
     # via matplotlib
+mariadb==1.1.4
+    # via -r requirements.in
 markdown==3.4.1
     # via tensorboard
 markupsafe==2.1.1
     # via
     #   jinja2
     #   werkzeug
-matplotlib==3.5.3
+matplotlib==3.6.0
     # via
     #   netcal
     #   seaborn
@@ -90,9 +94,10 @@ nodeenv==1.7.0
     # via pre-commit
 nose==1.3.7
     # via -r requirements.in
-numpy==1.23.2
+numpy==1.23.3
     # via
     #   -r requirements.in
+    #   contourpy
     #   matplotlib
     #   netcal
     #   opt-einsum
@@ -107,7 +112,7 @@ numpy==1.23.2
     #   tensorboard
     #   tikzplotlib
     #   torchvision
-oauthlib==3.2.0
+oauthlib==3.2.1
     # via requests-oauthlib
 opt-einsum==3.3.0
     # via pyro-ppl
@@ -116,7 +121,7 @@ packaging==21.3
     #   build
     #   matplotlib
     #   statsmodels
-pandas==1.4.4
+pandas==1.5.0
     # via
     #   -r requirements.in
     #   seaborn
@@ -140,7 +145,7 @@ pre-commit==2.20.0
     # via -r requirements.in
 progressbar2==4.0.0
     # via pygam
-protobuf==3.19.4
+protobuf==3.19.6
     # via tensorboard
 py4j==0.10.9
     # via pyspark
@@ -181,7 +186,7 @@ python-dateutil==2.8.2
     #   pandas
 python-utils==3.3.3
     # via progressbar2
-pytz==2022.2.1
+pytz==2022.4
     # via pandas
 pyyaml==6.0
     # via pre-commit
@@ -217,15 +222,15 @@ sniffio==1.3.0
     # via anyio
 sqlalchemy==1.4.41
     # via -r requirements.in
-starlette==0.19.1
+starlette==0.20.4
     # via fastapi
 statsmodels==0.13.2
     # via -r requirements.in
 sympy==1.11.1
     # via -r requirements.in
-tenacity==8.0.1
+tenacity==8.1.0
     # via plotly
-tensorboard==2.10.0
+tensorboard==2.10.1
     # via netcal
 tensorboard-data-server==0.6.1
     # via tensorboard

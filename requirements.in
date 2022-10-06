@@ -23,4 +23,6 @@ sqlalchemy
 sympy
 uvicorn
 wheel
-
+MariaDB
+pyspark
+pyspark-stubs
