@@ -57,7 +57,7 @@ distlib==0.3.6
     # via virtualenv
 entrypoints==0.4
     # via jupyter-client
-executing==1.1.0
+executing==1.1.1
     # via stack-data
 fastjsonschema==2.16.2
     # via nbformat
@@ -101,7 +101,7 @@ jsonschema==4.16.0
     # via
     #   jupyterlab-server
     #   nbformat
-jupyter-client==7.3.5
+jupyter-client==7.4.2
     # via
     #   ipykernel
     #   jupyter-server
@@ -117,7 +117,7 @@ jupyter-core==4.11.1
     #   nbconvert
     #   nbformat
     #   notebook
-jupyter-server==1.19.1
+jupyter-server==1.21.0
     # via
     #   jupyterlab
     #   jupyterlab-server
@@ -143,16 +143,16 @@ mistune==2.0.4
     # via nbconvert
 mypy-extensions==0.4.3
     # via black
-nbclassic==0.4.4
+nbclassic==0.4.6
     # via jupyterlab
-nbclient==0.6.8
+nbclient==0.7.0
     # via nbconvert
-nbconvert==7.1.0
+nbconvert==7.2.1
     # via
     #   jupyter-server
     #   nbclassic
     #   notebook
-nbformat==5.6.1
+nbformat==5.7.0
     # via
     #   jupyter-server
     #   nbclassic
@@ -194,7 +194,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-pip-tools==6.8.0
+pip-tools==6.9.0
     # via -r requirements.dev.in
 platformdirs==2.5.2
     # via
