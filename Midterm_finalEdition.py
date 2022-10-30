@@ -1,22 +1,28 @@
-import bisect
-import itertools
-import math
-import statistics
+import os
 import sys
-import warnings
-from collections import defaultdict
-
-import numpy
-import numpy as np
-import pandas
-import pandas as pd
 import scipy.stats
+import statsmodels.api as sm
+import bisect
+from collections import defaultdict
+import math
+import numpy as np
+import statistics
+import itertools
+import pandas as pd
+import plotly.express as px
 import statsmodels
 import statsmodels.api as sm
-from scipy import stats
+from plotly import graph_objects as go
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
+import scipy.stats
+import warnings
+import numpy
+import pandas
+from scipy import stats
+
 
 # *************** Defining all necessary functions ******************
 
@@ -58,6 +64,21 @@ def MeanSquaredDiff(X):
         msf = (chunk_mean - pop_mean) ** 2
     MeanSquaredDiff = msf.sum() / total_population
     return MeanSquaredDiff
+
+
+def bin_average(X):
+    bn = boundaries(X)
+    dic = defaultdict(list)
+    for x in X:
+        ind = bisect.bisect_right(bn, x)
+        dic[ind].append(x)
+    list_df = list(dic.values())
+
+    mean = []
+    for j in range(0, len(list_df) - 1):
+        chunk_mean = statistics.mean(list_df[j])
+        mean.append(chunk_mean)
+    return mean
 
 
 def WeightedMeanSquaredDiff(X):
@@ -155,9 +176,115 @@ def fill_na(data):
         return numpy.array([value if value is not None else 0 for value in data])
 
 
-def main():
-    # *************** Reading Dataset ******************
+def variable_cat_plot(x, y, path=None):
+    conf_matrix = confusion_matrix(x, y)
 
+    fig_no_relationship = go.Figure(
+        data=go.Heatmap(z=conf_matrix, zmin=0, zmax=conf_matrix.max())
+    )
+    fig_no_relationship.update_layout(
+        title="Categorical Predictor by Categorical Response (without relationship)",
+        xaxis_title=x.name,
+        yaxis_title=y.name,
+    )
+    if path is not None:
+        fig_no_relationship.write_html(path, include_plotlyjs="cdn")
+    else:
+        fig_no_relationship.show()
+    return
+
+
+def variable_con_plot(x, y, path=None):
+    fig = px.scatter(x=x, y=y, trendline="ols")
+    fig.update_layout(
+        title="Two Continuous Predictors",
+        xaxis_title=x.name,
+        yaxis_title=y.name,
+    )
+    if path is not None:
+        fig.write_html(path)
+    else:
+        fig.show()
+    return
+
+
+def hist(x_label, y_label, path=None):
+    df = px.data.tips()
+    fig = px.histogram(df, x=x_label, y=y_label, color=x_label, marginal="rug",
+                       )
+    fig.update_layout(
+        xaxis_title=x_label.name,
+        yaxis_title=y_label.name,
+        legend_title=x_label.name,
+        font=dict(
+            family="Courier New, monospace",
+            size=18,
+            color="RebeccaPurple"
+        )
+    )
+    if path is not None:
+        fig.write_html(path)
+    else:
+        fig.show()
+    return
+
+
+def violin(x_label, y_label, path=None):
+    df = px.data.tips()
+    fig = px.violin(df, x=x_label, y=y_label, color=x_label, box=True, points="all",
+                    )
+    fig.update_layout(
+        xaxis_title=x_label.name,
+        yaxis_title=y_label.name,
+        legend_title=x_label.name,
+        font=dict(
+            family="Courier New, monospace",
+            size=18,
+            color="RebeccaPurple"
+        )
+    )
+    if path is not None:
+        fig.write_html(path)
+    else:
+        fig.show()
+    return
+
+def dataframe_to_html(df, hyperlink_columns, out_path):
+    def make_hyperlink(path):
+        f_url = os.path.basename(path)
+        return u'<a href="{}">{}</a>'.format(path, f_url)
+
+    # This css class helps to make our table look stylish
+    css_style = '<link rel="stylesheet" href="https://cdn.jupyter.org/notebook/5.1.0/style/style.min.css">'
+    # Set formatter for the hyperlink columns
+    formatters = {}
+    for hyperlink_column in hyperlink_columns:
+        formatters[hyperlink_column] = make_hyperlink
+    # Generate HTML table from dataframe
+    html_output = df.to_html(classes="rendered_html", formatters=formatters, justify="center", escape=False)
+
+    # Write HTML output into file along with a link to our css style
+    with open(out_path, "w") as out_file:
+        # Writing data to a file
+        out_file.write(css_style)
+        out_file.write(html_output)
+
+
+def init_directories():
+    try:
+        os.mkdir("concat_plot")
+        os.mkdir("cat_plot")
+        os.mkdir("con_plot")
+        os.mkdir("catcon_plot")
+    except:
+        pass
+
+
+def main():
+    global table_final
+    init_directories()
+
+    # *************** Reading Dataset ******************
     # Explanation 1: For the sake of running time, I'm doing all the analysis on the first 100 rows of dataset.
     # You can run whole code with changing df_full to df and removing line 13.
 
@@ -229,9 +356,9 @@ def main():
 
     for col in df.columns:
         if (
-            df[col].dtypes == "float"
-            or df[col].dtypes == "int"
-            and df[col].nunique() > 5
+                df[col].dtypes == "float"
+                or df[col].dtypes == "int"
+                and df[col].nunique() > 5
         ):
             df[col].fillna((df[col].mean()), inplace=True)
         else:
@@ -281,6 +408,7 @@ def main():
             "predictor 2",
             "Pearson Correlation",
             "Absolute Value of Correlation",
+            "Linear Regression Plot",
         ]
     )
 
@@ -290,6 +418,7 @@ def main():
             "predictor 2",
             "Cramers V",
             "Absolute Value of Correlation",
+            "heatmap"
         ]
     )
 
@@ -299,6 +428,8 @@ def main():
             "predictor 2",
             "Correlation ratio",
             "Absolute Value of Correlation",
+            "Violin Plot",
+            "Histogram Plot"
         ]
     )
 
@@ -308,39 +439,57 @@ def main():
             "predictor 2",
             "Correlation ratio",
             "Absolute Value of Correlation",
+            "Violin Plot",
+            "Histogram Plot"
         ]
     )
 
-    # 3. Fill in the Correlation tables
+    # 3. Fill in the Correlation tables and draw plots
+    # Explanation: First it calculate correlation and add it to the proper table, then it creates plots.
 
     for index, tup in enumerate(combo):
         if tup[0] in predictors_con and tup[1] in predictors_con:
             x_label = df[tup[0]]
             y_label = df[tup[1]]
             pearson = scipy.stats.pearsonr(x_label, y_label).statistic
-            new = [x_label.name, y_label.name, pearson, np.abs(pearson)]
+            path = "{}/{}_{}_{}".format("con_plot", tup[0], tup[1], "con_plot.html")
+            variable_con_plot(x_label, y_label, path)
+            new = [x_label.name, y_label.name, pearson, np.abs(pearson), path]
             table_con.loc[len(table_con)] = new
         elif tup[0] in predictors_cat and tup[1] in predictors_cat:
             x_label = df[tup[0]]
             y_label = df[tup[1]]
             fill_na(df)
             correlation = cat_correlation(x_label, y_label)
-            new = [x_label.name, y_label.name, correlation, np.abs(correlation)]
+            path = "{}/{}_{}_{}".format("cat_plot", tup[0], tup[1], "cat_plot.html")
+            variable_cat_plot(x_label, y_label, path)
+            new = [x_label.name, y_label.name, correlation, np.abs(correlation), path]
             table_cat.loc[len(table_cat)] = new
         elif tup[0] in predictors_cat and tup[1] in predictors_con:
             x_label = df[tup[0]]
             y_label = df[tup[1]]
             correlation = cat_cont_correlation(x_label, y_label)
-            new = [x_label.name, y_label.name, correlation, np.abs(correlation)]
+            path1 = "{}/{}_{}_{}".format("catcon_plot", tup[0], tup[1], "catcon_plot1.html")
+            path2 = "{}/{}_{}_{}".format("catcon_plot", tup[0], tup[1], "catcon_plot2.html")
+            hist(x_label, y_label, path1)
+            violin(x_label, y_label, path2)
+            new = [x_label.name, y_label.name, correlation, np.abs(correlation), path1, path2]
             table_catcon.loc[len(table_catcon)] = new
         elif tup[0] in predictors_con and tup[1] in predictors_cat:
             x_label = df[tup[1]]
             y_label = df[tup[0]]
             correlation = cat_cont_correlation(x_label, y_label)
-            new = [x_label.name, y_label.name, correlation, np.abs(correlation)]
+            path1 = "{}/{}_{}_{}".format("concat_plot", tup[0], tup[1], "concat_plot1.html")
+            path2 = "{}/{}_{}_{}".format("concat_plot", tup[0], tup[1], "concat_plot2.html")
+            violin(x_label, y_label, path2)
+            hist(x_label, y_label, path1)
+            new = [x_label.name, y_label.name, correlation, np.abs(correlation), path1, path2]
             table_concat.loc[len(table_concat)] = new
-    table_final = pd.concat([table_concat, table_catcon])
+            table_final = pd.concat([table_concat, table_catcon])
 
+    dataframe_to_html(table_cat, ["heatmap"], "tablecat.html")
+    dataframe_to_html(table_con, ["Linear Regression Plot"], "tablecon.html")
+    dataframe_to_html(table_final, ["Violin Plot", "Histogram Plot"], "tableboth.html")
     # *************** Brute Force for all 3 possibilities ******************
 
     # 1. creating the tables:
@@ -363,7 +512,16 @@ def main():
         ]
     )
 
-    brute_force_both = pd.DataFrame(
+    brute_force_both1 = pd.DataFrame(
+        columns=[
+            "predictor 1",
+            "predictor 2",
+            "Difference of Mean Response",
+            "Weighted Difference of Mean Response",
+        ]
+    )
+
+    brute_force_both2 = pd.DataFrame(
         columns=[
             "predictor 1",
             "predictor 2",
@@ -385,9 +543,10 @@ def main():
                     pred = model.predict()
                     meansquareddiff = MeanSquaredDiff(pred)
                     weightedmeansquareddiff = WeightedMeanSquaredDiff(pred)
+                    # corr = model.rsquared ** .5
                     con_new = [x, y, meansquareddiff, weightedmeansquareddiff]
                     brute_force_con.loc[len(brute_force_con)] = con_new
-                if tup[0] in predictors_cat and tup[1] in predictors_cat:
+                elif tup[0] in predictors_cat and tup[1] in predictors_cat:
                     x = tup[0]
                     y = tup[1]
                     dataset = df[[x, y]]
@@ -399,7 +558,7 @@ def main():
                     weightedmeansquareddiff = WeightedMeanSquaredDiff(pred)
                     cat_new = [x, y, meansquareddiff, weightedmeansquareddiff]
                     brute_force_cat.loc[len(brute_force_cat)] = cat_new
-                if tup[0] in predictors_cat and tup[1] in predictors_con:
+                elif tup[0] in predictors_cat and tup[1] in predictors_con:
                     x = tup[0]
                     y = tup[1]
                     dataset = df[[x, y]]
@@ -408,9 +567,9 @@ def main():
                     pred = model.predict()
                     meansquareddiff = MeanSquaredDiff(pred)
                     weightedmeansquareddiff = WeightedMeanSquaredDiff(pred)
-                    both = [x, y, meansquareddiff, weightedmeansquareddiff]
-                    brute_force_both.loc[len(brute_force_both)] = both
-                if tup[0] in predictors_con and tup[1] in predictors_cat:
+                    both1 = [x, y, meansquareddiff, weightedmeansquareddiff]
+                    brute_force_both1.loc[len(brute_force_both1)] = both1
+                elif tup[0] in predictors_con and tup[1] in predictors_cat:
                     x = tup[0]
                     y = tup[1]
                     dataset = df[[x, y]]
@@ -419,22 +578,41 @@ def main():
                     pred = model.predict()
                     meansquareddiff = MeanSquaredDiff(pred)
                     weightedmeansquareddiff = WeightedMeanSquaredDiff(pred)
-                    both = [x, y, meansquareddiff, weightedmeansquareddiff]
-                    brute_force_both.loc[len(brute_force_both)] = both
 
+    both2 = [x, y, meansquareddiff, weightedmeansquareddiff]
+    brute_force_both2.loc[len(brute_force_both2)] = both2
+    brute_force_both = pd.concat([brute_force_both1, brute_force_both2])
+
+    # *************** heatmap for all 3 possibilities ******************
+
+    # sns.heatmap(df_continuous)
+    # plt.show()
+
+    # df_cat = df_categorical.apply(lambda x: pd.factorize(x)[0]).corr(method="pearson", min_periods=1)
+    # sns.heatmap(df_cat, annot=True)
+    # plt.show()
+
+    # df_all = df.apply(lambda x: pd.factorize(x)[0]).corr(method="pearson", min_periods=1)
+    # sns.heatmap(df_all, annot=True)
+    # plt.show()
+
+    # dataframe_to_html(brute_force_con, ["Residual Plot"], "brutetablcon.html")
     # *************** Printing Tables for Each Possibility ******************
 
-    # 1. both categorical
+    # # 1. both categorical
     print(table_cat.sort_values(["Cramers V"], ascending=[False]).to_string())
     print(brute_force_cat.to_string())
 
-    # 2. both continuous
+    # # 2. both continuous
     print(table_con.sort_values(["Pearson Correlation"], ascending=[False]).to_string())
     print(brute_force_con.to_string())
 
-    # 2. categorical and continuous
+    # # 3. categorical and continuous
     print(table_final.sort_values(["Correlation ratio"], ascending=[False]).to_string())
     print(brute_force_both.to_string())
+
+
+    return
 
 
 if __name__ == "__main__":
