@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements.txt requirements.in
 #
-anyio==3.6.1
+anyio==3.6.2
     # via starlette
 build==0.8.0
     # via pip-tools
@@ -18,13 +18,15 @@ cycler==0.11.0
     # via matplotlib
 distlib==0.3.6
     # via virtualenv
-fastapi==0.85.0
+dython==0.7.2
+    # via -r requirements.in
+fastapi==0.85.1
     # via -r requirements.in
 filelock==3.8.0
     # via virtualenv
 flake8==5.0.4
     # via -r requirements.in
-fonttools==4.37.4
+fonttools==4.38.0
     # via matplotlib
 identify==2.5.6
     # via pre-commit
@@ -33,11 +35,17 @@ idna==3.4
 isort[requirements]==5.10.1
     # via -r requirements.in
 joblib==1.2.0
-    # via scikit-learn
+    # via
+    #   scikit-learn
+    #   scikit-plot
 kiwisolver==1.4.4
     # via matplotlib
-matplotlib==3.6.1
-    # via -r requirements.in
+matplotlib==3.6.0
+    # via
+    #   -r requirements.in
+    #   dython
+    #   scikit-plot
+    #   seaborn
 mccabe==0.7.0
     # via flake8
 nodeenv==1.7.0
@@ -46,20 +54,24 @@ numpy==1.23.4
     # via
     #   -r requirements.in
     #   contourpy
+    #   dython
     #   matplotlib
     #   pandas
     #   patsy
     #   scikit-learn
     #   scipy
+    #   seaborn
     #   statsmodels
 packaging==21.3
     # via
     #   build
     #   matplotlib
     #   statsmodels
-pandas==1.5.0
+pandas==1.5.1
     # via
     #   -r requirements.in
+    #   dython
+    #   seaborn
     #   statsmodels
 patsy==0.5.3
     # via statsmodels
@@ -75,8 +87,8 @@ plotly==5.10.0
     # via -r requirements.in
 pre-commit==2.20.0
     # via -r requirements.in
-px==0.1.0
-    # via -r requirements.in
+psutil==5.9.3
+    # via dython
 pycodestyle==2.9.1
     # via flake8
 pydantic==1.10.2
@@ -91,16 +103,25 @@ python-dateutil==2.8.2
     # via
     #   matplotlib
     #   pandas
-pytz==2022.4
+pytz==2022.5
     # via pandas
 pyyaml==6.0
     # via pre-commit
 scikit-learn==1.1.2
-    # via -r requirements.in
-scipy==1.9.2
     # via
+    #   -r requirements.in
+    #   dython
+    #   scikit-plot
+scikit-plot==0.3.7
+    # via dython
+scipy==1.9.3
+    # via
+    #   dython
     #   scikit-learn
+    #   scikit-plot
     #   statsmodels
+seaborn==0.12.1
+    # via dython
 six==1.16.0
     # via
     #   patsy
@@ -125,8 +146,6 @@ typing-extensions==4.4.0
     # via pydantic
 virtualenv==20.16.5
     # via pre-commit
-websocket-client==1.4.1
-    # via px
 wheel==0.37.1
     # via pip-tools
 
