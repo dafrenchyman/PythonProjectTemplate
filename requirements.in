@@ -1,1 +1,13 @@
+fastapi
+flake8==5.0.4
+isort[requirements]
 numpy
+pandas
+pip-tools
+pre-commit
+plotly
+scikit-learn
+statsmodels
+matplotlib
+matplotlib
+dython
