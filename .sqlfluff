@@ -5,7 +5,7 @@
 
 # Supported dialects https://docs.sqlfluff.com/en/stable/dialects.html
 # Or run 'sqlfluff dialects'
-dialect = snowflake
+dialect = mysql
 
 # Comma separated list of rules to exclude, or None
 exclude_rules = L011,L016,L022,L027,L031,L034,L036,L039,L051
