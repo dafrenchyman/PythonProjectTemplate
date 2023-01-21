@@ -8,7 +8,7 @@
 dialect = mysql
 
 # Comma separated list of rules to exclude, or None
-exclude_rules = L011,L016,L022,L027,L031,L034,L036,L039,L051
+exclude_rules = L004,L011,L014,L016,L022,L027,L031,L034,L036,L039,L051
 
 # Very large files can make the parser effectively hang.
 # This limit skips files over a certain character length
@@ -18,6 +18,7 @@ large_file_skip_char_limit = 1048576
 
 [sqlfluff:rules]
 comma_style = leading
+max_line_length = 80
 
 [sqlfluff:rules:L052]
 # Semi-colon formatting approach
